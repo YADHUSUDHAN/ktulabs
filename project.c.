@@ -1,0 +1,194 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <curses.h>
+#include <ctype.h>
+typedef struct list add;
+struct list
+{
+    char name[40];
+    char num[20];
+    add* next;
+};
+int i=1,size=0;
+void Insert(add** head)
+{
+    add* temp=(add*)malloc(sizeof(add));
+    printf("\nContact Name : ");
+    gets();
+    gets(temp->name);
+    printf("\nMobile Number : ");
+    gets(temp->num);
+    temp->next = NULL;
+    size++;
+    if(size == 5)
+    {
+         
+        printf("\nPhone Memory is full!!!");
+        printf("\nIf you want to add more contact,You have to delete some contact from your list...\n");
+        return;
+    }
+    else
+    {
+        if(*head == NULL)
+        {
+            *head = temp;
+             
+            printf("\nDone!!!\n");
+            return;
+        }
+        else
+        {
+            add* p = *head;
+            while(p->next != NULL)
+            {
+                p = p->next;
+            }
+            p->next = temp;
+             
+            printf("\nDone!!!\n");
+        }
+        return;
+    }
+}
+void Search(add*head)
+{
+    char ch[40];
+    printf("\nContact name : ");
+    gets(ch);
+     
+    printf("\nContact name : ");
+    gets(ch);
+     
+    if(head == NULL)
+    {
+         
+        printf("\nNo Contact exists in this Phone Book List!!!\n\n");
+        return;
+    }
+    else
+    {
+        add*p = head;
+        while(p != NULL)
+        {
+            if(strcmp((p->name),ch) == 0)
+            {
+                 
+                printf("\n%s",p->name);
+                printf("\n-------------------------");
+                printf("\nNumber : %s",p->num);
+                return;
+            }
+            p = p->next;
+        }
+         
+        printf("\nThis Contact is not exists in the list! ");
+    }
+}
+void Delete(add** head)
+{
+    char ch[40];
+    printf("\nContact name : ");
+    gets(ch);
+     
+    printf("\nContact name : ");
+    gets(ch);
+     
+    if(*head == NULL)
+    {
+         
+        printf("\nNo Contact exists in this Phone Book List!\n\n");
+        return;
+    }
+    else
+    {
+        if(strcmp(((*head)->name),ch) == 0)
+        {
+            add*p=*head;
+            *head = (*head)->next;
+            free(p);
+            printf("\nDone!!!\n");
+            return;
+        }
+        else
+        {
+            add*p = *head;
+            while(p->next != NULL)
+            {
+                if(strcmp((p->next->name),ch) == 0)
+                {
+                    p->next = p->next->next;
+                    size--;
+                    return;
+                }
+                p = p->next;
+            }
+             
+            printf("\nInvalid Contact!!!\n");
+        }
+    }
+}
+void Display(add* head)
+{
+    if(head == NULL)
+    {
+         
+        printf("\nNo Contact exists in this Phone Book List!");
+        return;
+    }
+    else
+    {
+        add*p = head;
+        while(p != NULL)
+        {
+            printf("\n%d.%c%s",i,32,p->name);
+            printf("\n-------------------------");
+            printf("\nNumber : %s",p->num);
+            p = p->next;
+            i++;
+        }
+    i=1;
+    return;
+    }
+}
+void main()
+{
+    add* head=NULL;
+     char c[40];
+                mainhome:
+                 
+                printf("\n WELCOME TO OUR PHONE BOOK \n");
+    while(1)
+    {
+        printf("\nMenu");
+        printf("\n1)Create A Contact\n2)Remove A Contact");
+        printf("\n3)Show The Contact List\n4)Find A Contact");
+        printf("\n5)Quit\n");
+        int ch;
+        scanf("%d",&ch);
+        if(ch == 5)
+        {
+            break;
+        }
+        else
+        {
+             switch(ch)
+            {
+                case 1 :
+                        Insert(&head);
+                        break;
+                case 2 : 
+                        Delete(&head);
+                        break;
+                case 3 : 
+                        Display(head);
+                        break;
+                case 4 : 
+                        Search(head);
+                        break;
+                default :printf("\n\t\tInvalid Choice!Try again!!!");
+                         break;
+            }
+        }
+    }
+}
